@@ -9,18 +9,19 @@ import 'package:untitled1newone/places/bloc/places_cubit.dart';
 import 'package:untitled1newone/places/bloc/places_states.dart';
 import 'package:untitled1newone/places/datalayer/places_model.dart';
 import 'package:untitled1newone/places/places_page.dart';
-// import 'package:safari/Registerall/Business%20Logic/States_Register.dart';
-// import 'package:safari/StartScreen/Business%20Logic(bloc)/StartScreen_Bloc.dart';
-// import 'package:safari/StartScreen/Business%20Logic(bloc)/StartScreen_States.dart';
-// import 'package:safari/StartScreen/Data%20Layer/DataModel.dart';
-// import 'package:safari/StartScreen/Data%20Layer/StartScreen(Api).dart';
+
+// import 'package:untitled1newone/Registerall/Business%20Logic/States_Register.dart';
+// import 'package:untitled1newone/StartScreen/Business%20Logic(bloc)/StartScreen_Bloc.dart';
+// import 'package:untitled1newone/StartScreen/Business%20Logic(bloc)/StartScreen_States.dart';
+// import 'package:untitled1newone/StartScreen/Data%20Layer/DataModel.dart';
+// import 'package:untitled1newone/StartScreen/Data%20Layer/StartScreen(Api).dart';
 //
-// import 'package:safari/animation/animateroute.dart';
-// import 'package:safari/expanded/expandedfour.dart';
-// import 'package:safari/mytrip/MyTrip.dart';
-// import 'package:safari/mytrip/mytripp/businesslogic/Cubit_MyTrip.dart';
-// import 'package:safari/mytrip/mytripp/presentation/Widgets.dart';
-// import 'package:safari/offers/offer.dart';
+// import 'package:untitled1newone/animation/animateroute.dart';
+// import 'package:untitled1newone/expanded/expandedfour.dart';
+// import 'package:untitled1newone/mytrip/MyTrip.dart';
+// import 'package:untitled1newone/mytrip/mytripp/businesslogic/Cubit_MyTrip.dart';
+// import 'package:untitled1newone/mytrip/mytripp/presentation/Widgets.dart';
+// import 'package:untitled1newone/offers/offer.dart';
 import 'package:untitled1newone/register/bloc/States_Register.dart';
 import 'package:untitled1newone/restaurant/restaurant-page.dart';
 import 'package:untitled1newone/startscreen/business_logic/startscreen_bloc.dart';
@@ -33,10 +34,11 @@ import 'package:untitled1newone/mytrip/MyTrip.dart';
 import 'package:untitled1newone/mytrip/mytripp/businesslogic/Cubit_MyTrip.dart';
 import 'package:untitled1newone/mytrip/mytripp/presentation/Widgets.dart';
 import 'package:untitled1newone/offers/offer.dart';
+import 'package:untitled1newone/models/components/offers.dart' as h;
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);
- 
+
   @override
   State<StartScreen> createState() => _StartScreenState();
 }
@@ -74,10 +76,9 @@ class _StartScreenState extends State<StartScreen> {
   @override
   void initState() {
     BlocProvider.of<TripCubit>(context).getImages("Hotels", 0);
-    
+
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +86,6 @@ class _StartScreenState extends State<StartScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-
       ),
       extendBodyBehindAppBar: true,
       body: Container(
@@ -93,16 +93,16 @@ class _StartScreenState extends State<StartScreen> {
         width: MediaQuery.of(context).size.width,
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child:
-            BlocBuilder<TripCubit,TripStates>(builder:(context, state) {
-              return _CarouselSlider();
-            }),
-
+            SliverToBoxAdapter(
+              child:
+                  BlocBuilder<TripCubit, TripStates>(builder: (context, state) {
+                return _CarouselSlider();
+              }),
             ),
             SliverToBoxAdapter(
                 child: SizedBox(
-                  height: 30,
-                )),
+              height: 30,
+            )),
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -117,8 +117,7 @@ class _StartScreenState extends State<StartScreen> {
                     }),
               ),
             ),
-            BlocBuilder<TripCubit,TripStates>(builder:(context, state) {
-
+            BlocBuilder<TripCubit, TripStates>(builder: (context, state) {
               if (state is ImagesLoaded) {
                 this.imagelist = state.Imagelist;
                 return SliverToBoxAdapter(child: PlacesList());
@@ -126,18 +125,14 @@ class _StartScreenState extends State<StartScreen> {
               if (state is PlacesLoadedS) {
                 this.imagelist = state.placelist;
                 return SliverToBoxAdapter(child: PlacesList());
-              }
-              else
-                return SliverToBoxAdapter(child:Padding(
-                  padding: const EdgeInsets.only(top:50, left:185, right: 185),
+              } else
+                return SliverToBoxAdapter(
+                    child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 50, left: 185, right: 185),
                   child: CircularProgressIndicator(color: Colors.pink),
                 ));
-
-
-
-            }
-
-            ),
+            }),
           ],
         ),
       ),
@@ -147,73 +142,80 @@ class _StartScreenState extends State<StartScreen> {
   Widget _CarouselSlider() {
     return CarouselSlider(
       items: imagelist
-          .map((e) => ClipRRect(
-          borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(45),
-            bottomLeft: Radius.circular(45),
-          ),
-          child: 
-          InteractiveViewer(
-            maxScale: 4,
-            child: Container( width: double.infinity,
-              decoration:BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(e.image.toString()),fit: BoxFit.cover),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(22),
-                      bottomRight: Radius.circular(22))),
-              child:     Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(width: double.infinity,
+          .map(
+            (e) => ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(45),
+                  bottomLeft: Radius.circular(45),
+                ),
+                child: InteractiveViewer(
+                  maxScale: 4,
+                  child: Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              const Color((0x00000000)),
-                              const Color((0xCC000000)).withOpacity(0.3),
-                              const Color((0xCC000000)).withOpacity(0.5),
-                              const Color((0xCC000000)).withOpacity(0.7),
-                              const Color((0xCC000000)).withOpacity(0.9),
-                              const Color((0xCC000000))
-                            ]),
+                        image: DecorationImage(
+                            image: NetworkImage(e.image.toString()),
+                            fit: BoxFit.cover),
                         borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(22),
                             bottomRight: Radius.circular(22))),
-                    child: Align(alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 16.0, left: 16, right: 16, bottom: 3),
-                            child: Text(e.name,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.w800)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    const Color((0x00000000)),
+                                    const Color((0xCC000000)).withOpacity(0.3),
+                                    const Color((0xCC000000)).withOpacity(0.5),
+                                    const Color((0xCC000000)).withOpacity(0.7),
+                                    const Color((0xCC000000)).withOpacity(0.9),
+                                    const Color((0xCC000000))
+                                  ]),
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(22),
+                                  bottomRight: Radius.circular(22))),
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 16.0,
+                                      left: 16,
+                                      right: 16,
+                                      bottom: 3),
+                                  child: Text(e.name,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 35,
+                                          fontWeight: FontWeight.w800)),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      bottom: 8, left: 16),
+                                  child: Text("Subtitile Here",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white70,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400)),
+                                )
+                              ],
+                            ),
                           ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(bottom: 8, left: 16),
-                            child: Text("Subtitile Here",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white70,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400)),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-
+                )),
           )
-      ),
-      ).toList(),
+          .toList(),
       options: CarouselOptions(
         viewportFraction: 1,
         autoPlayInterval: Duration(seconds: 4),
@@ -226,22 +228,26 @@ class _StartScreenState extends State<StartScreen> {
 
   Widget _buildlist(BuildContext context, int index) {
     Size size = MediaQuery.of(context).size;
-    return BlocBuilder<TripCubit,TripStates>(builder: (context, state) {
+    return BlocBuilder<TripCubit, TripStates>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          if(buttons[index].Name=="Landmarks"){
+          if (buttons[index].Name == "Landmarks") {
             // BlocProvider.of<TripCubit>(context).Choice2;
-            BlocProvider.of<TripCubit>(context).GetPlacesRequest('Cairo',index);
-          }
-          else {
-           BlocProvider.of<TripCubit>(context).getImages(buttons[index].Name,index);
+            BlocProvider.of<TripCubit>(context)
+                .GetPlacesRequest('Cairo', index);
+          } else {
+            BlocProvider.of<TripCubit>(context)
+                .getImages(buttons[index].Name, index);
           }
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 10),
           child: Container(
             decoration: BoxDecoration(
-                color: BlocProvider.of<TripCubit>(context).selectedindex == index ? Colors.pink : Colors.white70,
+                color:
+                    BlocProvider.of<TripCubit>(context).selectedindex == index
+                        ? Colors.pink
+                        : Colors.white70,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: Colors.black12, width: 2)),
             child: Padding(
@@ -249,7 +255,11 @@ class _StartScreenState extends State<StartScreen> {
               child: Row(
                 children: [
                   Icon(buttons[index].icon,
-                      color: BlocProvider.of<TripCubit>(context).selectedindex == index ? Colors.white : Colors.grey),
+                      color:
+                          BlocProvider.of<TripCubit>(context).selectedindex ==
+                                  index
+                              ? Colors.white
+                              : Colors.grey),
                   SizedBox(width: 5),
                   Text(
                     buttons[index].Name,
@@ -258,7 +268,11 @@ class _StartScreenState extends State<StartScreen> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: BlocProvider.of<TripCubit>(context).selectedindex == index ? Colors.white : Colors.grey,
+                      color:
+                          BlocProvider.of<TripCubit>(context).selectedindex ==
+                                  index
+                              ? Colors.white
+                              : Colors.grey,
                     ),
                   ),
                 ],
@@ -267,7 +281,6 @@ class _StartScreenState extends State<StartScreen> {
           ),
         ),
       );
-
     });
   }
 
@@ -282,12 +295,34 @@ class _StartScreenState extends State<StartScreen> {
         itemCount: imagelist.length,
         itemBuilder: (context, index) => InkWell(
           onTap: () {
-            Navigator.of(context).push(SlideRight( Page:  
-            imagelist[index].type == 'Hotels' ? Hotel() 
-              : imagelist[index].type == 'Flight Companies' ? Flight()
-              : imagelist[index].type == 'Restaurants' ? RestaurantScreen()
-              : imagelist[index].type == 'Transportations' ? ListCars()
-              : BlocProvider(create:(BuildContext context)=>PlacesCubit(PlacesInitState()),child: PlacesScreen(placemodel: index, city: "Cairo",)),//placesm[index]
+            Navigator.of(context).push(SlideRight(
+              Page: imagelist[index].type == 'Hotels'
+                  ? Hotel(h.Offer(
+                      id: '',
+                      description: '',
+                      name: '',
+                      totalCost: 12,
+                      offerPath: '',
+                      images: [],
+                      discount: 12,
+                      dateTo: DateTime.now(),
+                      dateFrom: DateTime.now(),
+                      companyType: 'co',
+                      companyID: '',
+                      favorite: false))
+                  : imagelist[index].type == 'Flight Companies'
+                      ? Flight()
+                      : imagelist[index].type == 'Restaurants'
+                          ? RestaurantScreen()
+                          : imagelist[index].type == 'Transportations'
+                              ? ListCars()
+                              : BlocProvider(
+                                  create: (BuildContext context) =>
+                                      PlacesCubit(PlacesInitState()),
+                                  child: PlacesScreen(
+                                    placemodel: index,
+                                    city: "Cairo",
+                                  )), //placesm[index]
               // : RestaurantScreen()
             ));
           },
@@ -363,7 +398,7 @@ class _StartScreenState extends State<StartScreen> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(bottom: 8, left: 16),
+                                    const EdgeInsets.only(bottom: 8, left: 16),
                                 child: Text("Subtitile Here",
                                     textAlign: TextAlign.left,
                                     style: TextStyle(

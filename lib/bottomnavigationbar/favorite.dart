@@ -81,7 +81,7 @@ class _FavoriteState extends State<Favorite> {
                                   //     builder: (context) => Hotel(),
                                   //   ),
                                   // );
-                                  Navigator.of(context).push(Slide3(Page: Hotel()));
+                                  // Navigator.of(context).push(Slide3(Page: Hotel()));
                                   //context.read<MainScreenBloc>().add(OfferEvent());
                                 },
                               ),
@@ -98,7 +98,7 @@ class _FavoriteState extends State<Favorite> {
                                 color: Theme.of(context).appBarTheme.iconTheme!.color,
                               ),
                               onPressed: (){
-                                Navigator.of(context).push(SlideRight(Page: Tours()));
+                                // Navigator.of(context).push(SlideRight(Page: Tours()));
                               },
                             ),
                           ),
@@ -112,7 +112,7 @@ class _FavoriteState extends State<Favorite> {
                               padding: EdgeInsets.all(10),
                               child: MaterialButton(
                                 onPressed: (){
-                                  Navigator.of(context).push(SlideRight(Page: Tours()));
+                                  // Navigator.of(context).push(SlideRight(Page: Tours()));
                                 },
                                 child: Align(
                                   alignment: LocalizationCubit.get(context).localization ? Alignment.bottomRight : Alignment.bottomLeft,

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-// import 'package:safari/mytrip/MyTrip.dart';
+// import 'package:untitled1newone/mytrip/MyTrip.dart';
 import 'package:untitled1newone/mytrip/MyTrip.dart';
 class CurrencyClient {
   static String BaseUrl = "http://free.currconv.com/api/v7/";

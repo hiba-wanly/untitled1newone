@@ -11,6 +11,10 @@ import 'package:untitled1newone/register/datalayer/Regitser_Repository.dart';
 import 'package:untitled1newone/register/presentation/widget/DisplayPicture.dart';
 import 'package:untitled1newone/register/presentation/widget/Loading_State.dart';
 import 'package:untitled1newone/localization/localization_bloc.dart';
+import 'package:untitled1newone/server/authintacation.dart' as auth;
+import 'package:untitled1newone/models/components/user.dart' as u;
+
+import '../../drawer/drawer.dart';
 
 
 
@@ -41,6 +45,8 @@ class _RegisterState extends State<Register> {
   late File UserImage;
 
   final Picker =ImagePicker();
+  final ValueNotifier<bool> _loading = ValueNotifier(false);
+
 
   RegisterModel registerModel = RegisterModel();
 
@@ -109,7 +115,7 @@ class _RegisterState extends State<Register> {
                         if(state is SuccessState)
                           return DisplayPicture(DisplayPhoto: state.profileImage);
 
-                        else
+                        else {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -453,28 +459,73 @@ class _RegisterState extends State<Register> {
 
                                 ),
 
-                                child: MaterialButton(
-                                  onPressed: (){
-                                    if (formKey.currentState!.validate()) {
+                                child: ValueListenableBuilder<bool>(
+                                  valueListenable: _loading,
+                                  builder: (c, value, widget) =>
+                                  value ?
+                                  const CircularProgressIndicator(
+                                    color: Colors.orange,)
+                                      : widget!,
+                                  child: MaterialButton(
+                                    onPressed: () async {
+                                      if (UserImage == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                            content: Text(
+                                                'You must upload photo')));
+                                        return ;
+                                      }
+                                      if (formKey.currentState!
+                                          .validate() ) {
+                                        try {
+                                          _loading.value = true;
+                                          await auth.Register.createAccount(
+                                            user:  u.User(
+                                                photoUrl: '',
+                                                phoneNumber: phonecontroler.text,
+                                                email:emailcontroler.text,
+                                                name: namecontroler.text
+                                            ),
+                                            image: UserImage, password: passoredcontroler.text, ).then((
+                                              value) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                                const SnackBar(
+                                                    content: Text(
+                                                        "Your account is created successfully"))
+                                            );
+                                            if(Navigator.of(context).canPop()){
+                                              Navigator.of(context).pop();
+                                            }else{
+                                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (c)=>HomeScreen()));
+                                            }
+                                          });
 
-                                      print("Button Clicked");
-                                      this.registerModel.Name=namecontroler.text;
-                                      this.registerModel.Phone= phonecontroler.text;
-                                      this.registerModel.Email=emailcontroler.text;
-                                      this.registerModel.Password=phonecontroler.text;
-                                      BlocProvider.of<RegisterCubit>(context).SendRequest(registerModel);
-
-                                    }
-                                  },
-                                  child: Text(
-                                    LocalizationCubit.get(context).localization ? 'انشاء حساب' : 'Register',
-                                    // S.of(context).pageRegister,
-                                    style: TextStyle(color: Colors.white),
+                                          _loading.value = false;
+                                        } on Exception catch (e) {
+                                          _loading.value = false;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                              const SnackBar(content: Text(
+                                                  "Some error happened"))
+                                          );
+                                          print(e.toString());
+                                        }
+                                      }
+                                    },
+                                    child: Text(
+                                      S
+                                          .of(context)
+                                          .pageRegister,
+                                      style: const TextStyle(
+                                          color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),
                             ],
                           );
+                        }
 
                       }),
                     ),

@@ -41,11 +41,12 @@ class _MyTripState extends State<MyTrip> {
 
   @override
   Widget build(BuildContext context) {
-    double Height= (MediaQuery.of(context).size.height)+X;
+    double Height= (MediaQuery.of(context).size.height)+MediaQuery.of(context).size.height *0.2;
     return BlocProvider(
       create: (BuildContext context)=>TripCubit(initialTripState()),
       child: Scaffold(
-          body: CustomScrollView(slivers: [
+          body: CustomScrollView(
+            slivers: [
             SliverToBoxAdapter(
               child: Container(
                 height: Height,
@@ -269,7 +270,7 @@ class _MyTripState extends State<MyTrip> {
                                                     // "Kids"
                                                     ),
                                                   Text(
-                                                  //"(2 - 12 year old)", 
+                                                  //"(2 - 12 year old)",
                                                    LocalizationCubit.get(context).localization ? '2-12 سنة' : '2-12 year old',
                                                   style: TextStyle(color: Colors.lightBlue,fontSize: 10 ),)
                                                 ],
@@ -353,7 +354,8 @@ class _MyTripState extends State<MyTrip> {
                                         Navigator.push(context , MaterialPageRoute(builder: (newContext) => BlocProvider.value(value: BlocProvider.of<TripCubit>(context),child: StartScreen())));
                                     },
                                     builder:(context , state) {
-                                      return MaterialButton(onPressed: () {
+                                      return MaterialButton(
+                                        onPressed: () {
 
                                         if (FormKey.currentState!.validate())
                                           BlocProvider.of<TripCubit>(context)

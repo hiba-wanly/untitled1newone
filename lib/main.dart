@@ -71,68 +71,80 @@
 import 'dart:ui';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:untitled1newone/airlines/airr.dart';
-import 'package:untitled1newone/cars/listofcars.dart';
+
 import 'package:untitled1newone/generated/l10n.dart';
 import 'package:untitled1newone/localization/localization_bloc.dart';
 import 'package:untitled1newone/localization/localization_state.dart';
 import 'package:untitled1newone/localization/preferences_loc.dart';
-import 'package:untitled1newone/login/bloc/Cubit_Login.dart';
-import 'package:untitled1newone/places/places_page.dart';
-import 'package:untitled1newone/restaurant/restaurant-page.dart';
+import 'package:untitled1newone/models/components/car.dart';
+
+import 'package:untitled1newone/models/offices/restaurant.dart';
+import 'package:untitled1newone/models/offices/transportion_office.dart';
+
+import 'package:untitled1newone/server/database_client.dart';
+import 'package:untitled1newone/server/query.dart';
 import 'package:untitled1newone/splashscreen.dart';
-import 'package:untitled1newone/startscreen/startscreen.dart';
-import 'package:untitled1newone/theme/colors/color.dart';
-import 'package:untitled1newone/drawer/drawer.dart';
-import 'package:untitled1newone/homelayout/bloc/home_bloc.dart';
-import 'package:untitled1newone/homelayout/bloc/home_state.dart';
 import 'package:untitled1newone/theme/colors/color_bloc.dart';
 import 'package:untitled1newone/theme/preferences.dart';
 import 'package:untitled1newone/theme/theme.dart';
-import 'homelayout/homelayout.dart';
+import 'models/components/flight.dart';
+import 'models/components/landmark.dart';
+import 'models/offices/airplanes.dart';
+import 'models/offices/hotel.dart';
 import 'theme/colors/color_state.dart';
-import 'package:flutter_gen/gen_l10n/app_localization.dart';
-import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
+// import 'package:flutter_gen/gen_l10n/app_localization.dart';
+// import 'package:flutter_gen/gen_l10n/app_localization.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   await CacheHelper.init();
   var isDark = CacheHelper.getBoolean(key: 'isDark');
   await Preferences.init();
   var localization = Preferences.getBooleanLan(key: 'localization');
-  runApp( MyApp(isDark,localization));
+  runApp(MyApp(isDark, localization));
 }
 
 class MyApp extends StatelessWidget {
   // const MyApp({Key? key}) : super(key: key);
 
-  final  isDark;
+  final isDark;
   final localization;
-   MyApp(this.isDark,this.localization);
+
+  MyApp(this.isDark, this.localization);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => ColorCubit()..changeAppMode(fromShared: isDark),
-      child: BlocConsumer<ColorCubit,ColorState>(
-        listener:(context,state){},
-        builder: (context,state){
+      create: (BuildContext context) =>
+      ColorCubit()
+        ..changeAppMode(fromShared: isDark),
+      child: BlocConsumer<ColorCubit, ColorState>(
+        listener: (context, state) {},
+        builder: (context, state) {
           return BlocProvider(
-            create: (BuildContext context) => LocalizationCubit()..changeAppLan(fromSharedLan: localization),
-            child: BlocConsumer<LocalizationCubit,LocalizationState>(
-              listener:(context,state){},
-              builder: (context,state){
+            create: (BuildContext context) =>
+            LocalizationCubit()
+              ..changeAppLan(fromSharedLan: localization),
+            child: BlocConsumer<LocalizationCubit, LocalizationState>(
+              listener: (context, state) {},
+              builder: (context, state) {
                 return MaterialApp(
                   title: 'Flutter Demo',
                   theme: AppTheme.lightTheme,
                   darkTheme: AppTheme.darkTheme,
-                  themeMode: ColorCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+                  themeMode: ColorCubit
+                      .get(context)
+                      .isDark
+                      ? ThemeMode.dark
+                      : ThemeMode.light,
                   // supportedLocales: l10n.all,
                   localizationsDelegates: [
                     S.delegate,
@@ -145,7 +157,8 @@ class MyApp extends StatelessWidget {
                   //   const Locale('ar' , ''),
                   // ],
                   supportedLocales: S.delegate.supportedLocales,
-                  home: SplashScreen(),//const MyHomePage(title: 'Flutter Demo Home Page'),
+                  home:
+                  SplashScreen(), //const MyHomePage(title: 'Flutter Demo Home Page'),
                 );
               },
             ),
@@ -155,5 +168,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

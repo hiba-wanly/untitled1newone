@@ -18,6 +18,10 @@ import 'package:untitled1newone/main_screen/bloc_main/main_state.dart';
 import 'package:untitled1newone/offers/offer.dart';
 import 'package:untitled1newone/tours/tour.dart';
 
+import '../models/components/offers.dart';
+import '../models/components/tour.dart';
+import '../server/database_client.dart';
+
 
 class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
@@ -27,6 +31,47 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+
+  List<Offer>? offers;
+  List<Tour>? tours;
+  final ValueNotifier<bool> _loadingOffers = ValueNotifier(false);
+  final ValueNotifier<bool> _loadingTours = ValueNotifier(false);
+
+  @override
+  initState() {
+    super.initState();
+    _loadAllOffers();
+    _loadAllTours();
+  }
+
+  Future<void> _loadAllOffers() async {
+    try {
+      _loadingOffers.value = true;
+      debugPrint('loading offers...');
+      offers = await DataBaseClintServer.getAllOffers();
+      debugPrint('loading tours completed successfully');
+      _loadingOffers.value = false;
+    } catch (e) {
+      _loadingOffers.value = false;
+      print(e);
+      offers = [];
+    }
+  }
+
+  Future<void> _loadAllTours() async {
+    try {
+      _loadingTours.value = true;
+      debugPrint('loading tours...');
+      tours = await DataBaseClintServer.getAllTours();
+      debugPrint('loading tours completed successfully');
+      _loadingTours.value = false;
+    } catch (e) {
+      _loadingTours.value = false;
+      print(e);
+      tours = [];
+    }
+  }
+
   List<String> imageList = [
     'images/image1.jpg',
     'images/image2.jpg',
@@ -39,140 +84,9 @@ class _MainState extends State<Main> {
     'images/image9.jpg',
   ];
 
-  List<Offer> offer = [
-    Offer(
-        image: 'images/play1.jpg', text: 'AAAAAAAAAAAAAAAAaAAA', flag: 'plat1'),
-    Offer(image: 'images/play2.jpg', text: 'AAA', flag: 'play2'),
-    Offer(image: 'images/play3.jpg', text: 'AAA', flag: 'play3'),
-    //Offer(image: 'images/rest1.jpg',text: 'AAA', flag: 'rest1'),
-    Offer(image: 'images/hotel1.jpg', text: 'AAA', flag: 'hotel1'),
-    Offer(image: 'images/hotel2.jpg', text: 'AAA', flag: 'hotel2'),
-    Offer(image: 'images/hotel3.jpg', text: 'AAA', flag: 'hotel3'),
-    Offer(image: 'images/food1.jpg', text: 'AAA', flag: 'food1'),
-    Offer(image: 'images/fly1.jpg', text: 'AAA', flag: 'fly1'),
-    Offer(image: 'images/fly2.jpg', text: 'AAA', flag: 'fly2'),
-  ];
 
-  List<Tour> tour = [
-    Tour(
-        image: 'images/play1.jpg',
-        name: 'AAAAAAAAAAAAAAAAAAAAAAaAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/play2.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/play3.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    // Tour(image: 'images/rest1.jpg',name: 'AAA',stars: 3,night: 5,day:4,price:154,view: 5487,place: 5,num: 012365479,num2: 45123697,description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/hotel1.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/hotel2.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/hotel3.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/food1.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/fly1.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-    Tour(
-        image: 'images/fly2.jpg',
-        name: 'AAA',
-        stars: 3,
-        night: 5,
-        day: 4,
-        price: 154,
-        view: 5487,
-        place: 5,
-        num: 012365479,
-        num2: 45123697,
-        description: 'jfffjjfkfkdlfjlfjdfhdffhkhjfgr',
-        include: 'fkjfkghfgkhfggfjhgfjhg'),
-  ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -224,16 +138,32 @@ class _MainState extends State<Main> {
               SizedBox(
                 height: 28.0,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: _Offers(),
+              ValueListenableBuilder<bool>(
+                valueListenable: _loadingOffers,
+                builder: (context, value, _) => value
+                    ? const CircularProgressIndicator()
+                    : Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: offers == null || (offers?.isEmpty ?? false)
+                      ? const SizedBox(
+                    height: 100,
+                    child: Text("NO Data to display"),
+                  )
+                      : _Offers(offers!),
+                ),
               ),
               SizedBox(
                 height: 28.0,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: _Tour(),
+              ValueListenableBuilder<bool>(
+                valueListenable: _loadingTours,
+                builder: (context, value, _) =>
+                value ? const CircularProgressIndicator() : Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: tours == null || (tours?.isEmpty ?? false)
+                      ? const Text("No data to display")
+                      : _Tour(tours!),
+                ),
               ),
               SizedBox(
                 height: 70,
@@ -273,7 +203,7 @@ class _MainState extends State<Main> {
     );
   }
 
-  Widget _Offers() {
+  Widget _Offers(List<Offer> offers) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,19 +225,19 @@ class _MainState extends State<Main> {
           child: SizedBox(
             height: (MediaQuery.of(context).size.height) - 600,
             child: ListView.builder(
-              itemCount: offer.length,
+              itemCount: offers.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(SlideRight(Page: Hotel()));
+                      // Navigator.of(context).push(SlideRight(Page: Hotel(Offer())));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage(offer[index].image),
+                              image: NetworkImage(offers[index].images.first),
                               fit: BoxFit.cover),
                           borderRadius: BorderRadius.circular(25),),
                       child: Stack(
@@ -331,7 +261,7 @@ class _MainState extends State<Main> {
                                     Padding(
                                       padding: const EdgeInsets.only(
                                          top: 8, right: 8, bottom: 8),
-                                      child: Text("50%",
+                                      child: Text("${offers[index].discount}%",
                                         style: TextStyle(
                                           color: Colors.white,
                                             fontWeight: FontWeight.w600),
@@ -373,7 +303,7 @@ class _MainState extends State<Main> {
                                               bottom: 3),
                                           child: SizedBox(
                                             width: 130,
-                                            child: Text(offer[index].text,
+                                            child: Text(offers[index].name,
                                                 textAlign: TextAlign.left,
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -384,7 +314,7 @@ class _MainState extends State<Main> {
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               bottom: 8, left: 16),
-                                          child: Text("Subtitile Here",
+                                          child: Text(offers[index].description,
                                               textAlign: TextAlign.left,
                                               style: TextStyle(
                                                   color: Colors.white70,
@@ -473,7 +403,7 @@ class _MainState extends State<Main> {
     );
   }
 
-  Widget _Tour() {
+  Widget _Tour(List<Tour> tours) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -496,7 +426,7 @@ class _MainState extends State<Main> {
             height: (MediaQuery.of(context).size.height) - 475,
             child: Container(
               child: ListView.builder(
-                itemCount: tour.length,
+                itemCount: tours.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) => Padding(
                   padding: const EdgeInsets.only(right: 2, left: 2),
@@ -515,7 +445,7 @@ class _MainState extends State<Main> {
                           // alignment: Alignment.center,
                           children: [
                             Image(
-                              image: AssetImage(tour[index].image),
+                              image: NetworkImage(tours[index].images.first),
                               width: (MediaQuery.of(context).size.width) - 190,
                               height:
                                   (MediaQuery.of(context).size.height) - 630,
@@ -534,7 +464,7 @@ class _MainState extends State<Main> {
                                 width:
                                     (MediaQuery.of(context).size.width) - 220,
                                 child: Expandedthree(
-                                  text: tour[index].name,
+                                  text: tours[index].name,
                                 ),
                               ),
 
@@ -552,7 +482,7 @@ class _MainState extends State<Main> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      ' ${tour[index].day}',
+                                      ' ${tours[index].days}',
                                       style: Theme.of(context).textTheme.headline4,
                                       textAlign: TextAlign.left,
                                     ),
@@ -582,7 +512,7 @@ class _MainState extends State<Main> {
                               ),
                               onPressed: () {
                                 Navigator.of(context)
-                                    .push(SlideLeft(Page: Tours()));
+                                    .push(SlideLeft(Page: Tours(tours[index])));
                                 //context.read<MainScreenBloc>().add(ToursEvent());
                                 // Navigator.push(
                                 //   context ,
@@ -613,42 +543,4 @@ class _MainState extends State<Main> {
   }
 }
 
-class Offer {
-  String image;
-  String text;
-  String flag;
-  Offer({
-    required this.image,
-    required this.text,
-    required this.flag,
-  });
-}
 
-class Tour {
-  String image;
-  String name;
-  int stars;
-  int night;
-  int day;
-  int price;
-  int view;
-  int place;
-  int num;
-  int num2;
-  String description;
-  String include;
-  Tour({
-    required this.image,
-    required this.name,
-    required this.stars,
-    required this.night,
-    required this.day,
-    required this.price,
-    required this.view,
-    required this.place,
-    required this.num,
-    required this.num2,
-    required this.description,
-    required this.include,
-  });
-}

@@ -2,7 +2,7 @@
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:safari/expandedwidget.dart';
+// import 'package:untitled1newone/expandedwidget.dart';
 //
 // class Offers extends StatefulWidget {
 //   @override
@@ -321,6 +321,7 @@ import 'package:untitled1newone/maps.dart';
 import 'package:untitled1newone/reviewmodle.dart';
 import 'package:untitled1newone/stars/star.dart';
 import 'package:untitled1newone/theme/colors/color.dart';
+import 'package:untitled1newone/models/components/offers.dart' as offer_model;
 
 import '../expanded/expandedwidget.dart';
 
@@ -329,6 +330,8 @@ class Hotel extends StatefulWidget {
 
 
 
+  final offer_model.Offer offer;
+  const Hotel(this.offer,{Key? key}):super(key: key);
   @override
   State<Hotel> createState() => _HotelState();
 }
@@ -455,7 +458,7 @@ class _HotelState extends State<Hotel> {
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Text(
-                            "Rotana",
+                            widget.offer.name,
                             style: Theme.of(context).textTheme.headline1,
                           ),
                         ),
@@ -470,7 +473,7 @@ class _HotelState extends State<Hotel> {
                           ),
                           SizedBox(width: 5,),
                           Text(
-                            "Amman",
+                            widget.offer.discount.toString(),
                             style: Theme.of(context).textTheme.headline6,
                           ),
                           SizedBox(width: 20,),
@@ -508,7 +511,7 @@ class _HotelState extends State<Hotel> {
                                     ),
                                   ),
                                   Text(
-                                    '355',
+                                    widget.offer.totalCost.toString(),
                                     style: TextStyle(
                                       fontSize: 15.0,
 
@@ -622,8 +625,7 @@ class _HotelState extends State<Hotel> {
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: ExpandedWidget(text:
-            'Amman Rotana is located in the central business, social and residential destination, Amman’s new downtown, Al Abdali. This 5 star hotel offers business travellers and holiday makers alike the serenity and warmth of home as well as the splendour and modern extravagance that can only be offered at Amman Rotana. The hotel is within a 45-minute drive from Queen Alia International Airport.mman Rotana is the first tower hotel in Jordan offering 412 luxury hotel rooms and suites, housed across 50 floors at 188 metres high. All rooms boast floor-to-ceiling windows offering remarkable views of the city and are flooded with natural light.',
-            ),
+           widget.offer.description),
           ),
           // SizedBox(height: 14,),
           Divider(color: Colors.grey[200],),

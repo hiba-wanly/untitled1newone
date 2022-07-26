@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled1newone/places/datalayer/places_model.dart';
-// import 'package:safari/StartScreen/Data%20Layer/DataModel.dart';
-// import 'package:safari/mytrip/MyTrip.dart';
+// import 'package:untitled1newone/StartScreen/Data%20Layer/DataModel.dart';
+// import 'package:untitled1newone/mytrip/MyTrip.dart';
 import 'package:untitled1newone/startscreen/data_layer/datamodel.dart';
 import 'package:untitled1newone/mytrip/MyTrip.dart';
 
